@@ -14,7 +14,7 @@ def browser(request):
     options = webdriver.ChromeOptions()
     options.add_experimental_option('prefs', {'intl.accept_languages': language})
     
-    service = Service(ChromeDriverManager().install())
+    service = Service("C:/chromedriver/chromedriver.exe")
     browser = webdriver.Chrome(service=service, options=options)
     browser.implicitly_wait(5)
     
