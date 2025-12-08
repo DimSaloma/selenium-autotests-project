@@ -4,6 +4,7 @@ from selenium.webdriver.common.by import By
 class BasePageLocators():
     LOGIN_LINK = (By.CSS_SELECTOR, "#login_link")
     LOGIN_LINK_INVALID = (By.CSS_SELECTOR, "#login_link_inc")
+    BASKET_LINK = (By.CSS_SELECTOR, ".btn-group a.btn-default")  # Ссылка на корзину
 
 
 class MainPageLocators():
@@ -48,3 +49,13 @@ class ProductPageLocators():
     
     # Цена товара в сообщении о корзине
     BASKET_TOTAL_PRICE = (By.CSS_SELECTOR, ".alert-info strong")
+
+
+class BasketPageLocators():
+    """Локаторы для страницы корзины."""
+    
+    # Товары в корзине (если они есть)
+    BASKET_ITEMS = (By.CSS_SELECTOR, ".basket-items")
+    
+    # Сообщение о пустой корзине
+    EMPTY_BASKET_MESSAGE = (By.CSS_SELECTOR, "#content_inner p")
