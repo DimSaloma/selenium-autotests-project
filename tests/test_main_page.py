@@ -1,40 +1,56 @@
+import pytest
 from .pages.main_page import MainPage
 from .pages.login_page import LoginPage
-from .pages.basket_page import BasketPage  # Импорт для нового теста
+from .pages.basket_page import BasketPage
 
 
-def test_guest_can_go_to_login_page(browser):
-    link = "http://selenium1py.pythonanywhere.com/"
+@pytest.mark.login_guest
+class TestLoginFromMainPage():
+    """Тесты, связанные с переходом на страницу логина."""
     
-    # Работаем с MainPage
-    page = MainPage(browser, link)
-    page.open()
-    page.go_to_login_page()
+    def test_guest_can_go_to_login_page(self, browser):
+        """Гость может перейти на страницу логина."""
+        link = "http://selenium1py.pythonanywhere.com/"
+        
+        # Работаем с MainPage
+        page = MainPage(browser, link)
+        page.open()
+        page.go_to_login_page()
+        
+        # Переключаемся на LoginPage (страницу логина)
+        login_page = LoginPage(browser, browser.current_url)
+        login_page.should_be_login_page()   # проверяем что это действительно страница логина
     
-    # Переключаемся на LoginPage (страницу логина)
-    login_page = LoginPage(browser, browser.current_url)
-    login_page.should_be_login_page()   # проверяем что это действительно страница логина
+    def test_guest_should_see_login_link(self, browser):
+        """Гость видит ссылку на страницу логина."""
+        link = "http://selenium1py.pythonanywhere.com/"
+        page = MainPage(browser, link)
+        page.open()
+        page.should_be_login_link()
 
 
-def test_guest_cant_see_product_in_basket_opened_from_main_page(browser):
-    """
-    Гость открывает главную страницу
-    Переходит в корзину по кнопке в шапке сайта
-    Ожидаем, что в корзине нет товаров
-    Ожидаем, что есть текст о том что корзина пуста
-    """
-    link = "http://selenium1py.pythonanywhere.com/"
-    page = MainPage(browser, link)
-    page.open()
+class TestBasketFromMainPage():
+    """Тесты, связанные с корзиной с главной страницы."""
     
-    # Переходим в корзину
-    page.go_to_basket_page()
-    
-    # Создаем объект страницы корзины
-    basket_page = BasketPage(browser, browser.current_url)
-    
-    # Проверяем, что в корзине нет товаров
-    basket_page.should_not_be_items_in_basket()
-    
-    # Проверяем, что есть сообщение о пустой корзине
-    basket_page.should_be_empty_basket_message()
+    def test_guest_cant_see_product_in_basket_opened_from_main_page(self, browser):
+        """
+        Гость открывает главную страницу
+        Переходит в корзину по кнопке в шапке сайта
+        Ожидаем, что в корзине нет товаров
+        Ожидаем, что есть текст о том что корзина пуста
+        """
+        link = "http://selenium1py.pythonanywhere.com/"
+        page = MainPage(browser, link)
+        page.open()
+        
+        # Переходим в корзину
+        page.go_to_basket_page()
+        
+        # Создаем объект страницы корзины
+        basket_page = BasketPage(browser, browser.current_url)
+        
+        # Проверяем, что в корзине нет товаров
+        basket_page.should_not_be_items_in_basket()
+        
+        # Проверяем, что есть сообщение о пустой корзине
+        basket_page.should_be_empty_basket_message()
